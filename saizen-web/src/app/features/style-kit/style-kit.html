@@ -1,0 +1,45 @@
+<section class="kit">
+  @for (r of [run()]; track r) {
+    <h1 class="display-section" appSplitText>Style kit</h1>
+  }
+
+  <div class="kit__row">
+    <button class="btn" type="button" (click)="replayText()">Replay heading</button>
+    <button class="btn btn--ghost" type="button" (click)="replayLoader()">Preview loader</button>
+  </div>
+
+  <h2 class="display-title">Colour</h2>
+  <ul class="swatches">
+    @for (s of swatches; track s.token) {
+      <li class="swatch" [style.background]="'var(' + s.token + ')'">
+        <span class="swatch__name">{{ s.name }}</span>
+        <code>{{ s.token }}</code>
+      </li>
+    }
+  </ul>
+
+  <h2 class="display-title">Type</h2>
+  <div class="specimens">
+    <div>
+      <p class="specimen specimen--hero">Hero</p>
+      <code>Anton, 6-9rem</code>
+    </div>
+    <div>
+      <p class="specimen specimen--section">Section title</p>
+      <code>Anton, 3-4rem</code>
+    </div>
+    <div>
+      <p class="specimen specimen--body">
+        Inter for everything you read: meals, sets, quest descriptions and the numbers beside them.
+      </p>
+      <code>Inter, 17px / 1.6</code>
+    </div>
+  </div>
+
+  <h2 class="display-title">Light surface</h2>
+  <div class="surface-light panel">
+    <h3 class="display-title">Today's quests</h3>
+    <p>Plum text on milk, for cards and forms that need to sit apart from the dark background.</p>
+    <button class="btn" type="button">Save changes</button>
+  </div>
+</section>

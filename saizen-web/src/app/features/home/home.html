@@ -1,0 +1,18 @@
+<section class="hero">
+  <span class="hero__rank" aria-hidden="true">E</span>
+  <h1 class="display-hero" appSplitText>Level up<br>every day.</h1>
+  <p class="hero__lede">
+    Log your meals and workouts, clear daily quests, and watch your rank climb from E to S.
+  </p>
+  <a class="btn" routerLink="/style-kit">Open the style kit</a>
+
+  <p class="hero__status">
+    @if (health.result(); as h) {
+      API {{ h.status.toLowerCase() }}. Database {{ h.database ? 'connected' : 'unreachable' }}.
+    } @else if (health.error(); as e) {
+      API unreachable: {{ e }}
+    } @else {
+      Checking the API...
+    }
+  </p>
+</section>

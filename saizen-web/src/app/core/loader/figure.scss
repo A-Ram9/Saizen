@@ -1,0 +1,30 @@
+/* Shared by the loader line-art figures: outline drawing effect and base SVG styling. */
+:host { display: block; }
+
+svg {
+  display: block;
+  width: 15rem;
+  max-width: 40vw;
+  height: auto;
+  overflow: visible;
+}
+
+/* Every outline carries pathLength="1", so one dash covers the whole path. */
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: draw 600ms var(--ease-out) var(--d, 0s) both;
+}
+
+.far { stroke-opacity: 0.5; }
+
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Reduced motion: no drawing, no movement, just the figure at rest. */
+@media (prefers-reduced-motion: reduce) {
+  .draw { animation-name: none; }
+  * { animation-play-state: paused !important; }
+}

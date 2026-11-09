@@ -1,0 +1,41 @@
+/*
+ * Run cycle: 0.8s. Legs and arms are paused at their starting pose until the figure is drawn
+ * (.is-moving starts them). The far leg and the near arm run half a cycle behind, so the limbs alternate.
+ */
+.body { animation: bob 0.4s ease-in-out infinite paused; }
+
+.thigh { transform-origin: 112px 70px; animation: thigh 0.8s ease-in-out infinite paused; }
+.shank { transform-origin: 112px 94px; animation: shank 0.8s ease-in-out infinite paused; }
+.arm { transform-origin: 124px 46px; animation: arm 0.8s ease-in-out infinite paused; }
+
+.leg--b .thigh,
+.leg--b .shank,
+.arm--b { animation-delay: -0.4s; }
+
+.is-moving .body,
+.is-moving .thigh,
+.is-moving .shank,
+.is-moving .arm { animation-play-state: running; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* Forward is a negative angle (counter-clockwise), backward positive. */
+@keyframes thigh {
+  0%, 100% { transform: rotate(-35deg); }
+  50% { transform: rotate(25deg); }
+}
+
+@keyframes shank {
+  0%, 100% { transform: rotate(25deg); }
+  25% { transform: rotate(12deg); }
+  50% { transform: rotate(20deg); }
+  75% { transform: rotate(105deg); }
+}
+
+@keyframes arm {
+  0%, 100% { transform: rotate(40deg); }
+  50% { transform: rotate(-40deg); }
+}

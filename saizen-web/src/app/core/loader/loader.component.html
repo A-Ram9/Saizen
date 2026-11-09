@@ -1,0 +1,15 @@
+<div class="loader" [class.is-done]="!loader.visible()" role="status" aria-live="polite">
+  <span class="loader__mark">Saizen</span>
+  @for (run of [figureRun()]; track run) {
+    <div class="loader__figures" aria-hidden="true">
+      <app-bench-press [moving]="moving()" />
+      <app-jogger [moving]="moving()" />
+    </div>
+  }
+  <div class="loader__foot">
+    @for (l of [line()]; track l) {
+      <p class="loader__line">{{ l }}</p>
+    }
+    <span class="loader__bar" aria-hidden="true"></span>
+  </div>
+</div>

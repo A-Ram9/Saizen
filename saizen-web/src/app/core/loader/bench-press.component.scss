@@ -1,0 +1,26 @@
+/* One rep (down and back up) takes 1.5s. The bar and the arms share the same timing. */
+.bar { animation: bar 1.5s ease-in-out infinite paused; }
+
+/* The arm keeps its drawing animation and adds the press; both run from the same declaration. */
+.arm {
+  animation:
+    draw 600ms var(--ease-out) var(--d, 0s) both,
+    press 1.5s ease-in-out infinite paused;
+}
+
+.is-moving .bar { animation-play-state: running; }
+.is-moving .arm { animation-play-state: running, running; }
+
+@keyframes bar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(24px); }
+}
+
+@keyframes press {
+  0%, 100% { d: path('M66 84L66 64L66 44'); }
+  50% { d: path('M66 84L84 78L66 68'); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arm { animation-name: none, press; }
+}

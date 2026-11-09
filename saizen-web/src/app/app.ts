@@ -1,23 +1,25 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Health, HealthService } from './core/health.service';
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { HealthService } from './core/health.service';
+import { LoaderComponent } from './core/loader/loader.component';
+import { LoaderService } from './core/loader/loader.service';
+
+const MIN_LOADER_MS = 900;
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, LoaderComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  private readonly healthService = inject(HealthService);
-
-  protected readonly health = signal<Health | null>(null);
-  protected readonly error = signal<string | null>(null);
-
   constructor() {
-    this.healthService.get().subscribe({
-      next: h => this.health.set(h),
-      error: e => this.error.set(e.error?.databaseError ?? e.message)
-    });
+    const loader = inject(LoaderService);
+    const started = Date.now();
+    const release = () =>
+      setTimeout(() => loader.hide(), Math.max(0, MIN_LOADER_MS - (Date.now() - started)));
+
+    // Keep the loader up until the API has answered (or failed) and the minimum time has passed.
+    inject(HealthService).get().subscribe({ next: release, error: release });
   }
 }

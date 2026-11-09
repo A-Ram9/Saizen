@@ -1,1 +1,145 @@
-/* You can add global styles to this file, and also import other style files */
+/* ---------- Design tokens ---------- */
+:root {
+  /* Base palette: everything else is derived from these two. */
+  --plum: #381932;
+  --milk: #fff3e6;
+
+  /* Plum drifting toward milk (surfaces, borders on dark backgrounds). */
+  --plum-tint-1: color-mix(in srgb, var(--plum) 88%, var(--milk));
+  --plum-tint-2: color-mix(in srgb, var(--plum) 74%, var(--milk));
+  --plum-tint-3: color-mix(in srgb, var(--plum) 56%, var(--milk));
+  --plum-tint-4: color-mix(in srgb, var(--plum) 34%, var(--milk));
+
+  /* Milk drifting toward plum (secondary text, borders on light surfaces). */
+  --milk-dim: color-mix(in srgb, var(--milk) 72%, var(--plum));
+  --milk-muted: color-mix(in srgb, var(--milk) 52%, var(--plum));
+
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --fs-hero: clamp(6rem, 3rem + 8vw, 9rem);
+  --fs-section: clamp(3rem, 2rem + 3vw, 4rem);
+  --fs-title: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 7rem;
+
+  --radius: 0.25rem;
+  --transition-route: 560ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-wipe: cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--plum);
+  color: var(--milk);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.display-hero { font-size: var(--fs-hero); overflow-wrap: anywhere; }
+.display-section { font-size: var(--fs-section); }
+.display-title { font-size: var(--fs-title); line-height: 1.05; }
+
+p { margin: 0; max-width: 60ch; }
+
+a { color: inherit; }
+
+::selection { background: var(--milk); color: var(--plum); }
+
+:focus-visible {
+  outline: 2px solid var(--milk);
+  outline-offset: 3px;
+}
+
+.surface-light {
+  background: var(--milk);
+  color: var(--plum);
+}
+.surface-light :focus-visible { outline-color: var(--plum); }
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  border: 2px solid var(--milk);
+  border-radius: var(--radius);
+  background: var(--milk);
+  color: var(--plum);
+  font: 600 var(--fs-body) / 1 var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 160ms, color 160ms;
+
+  &:hover { background: transparent; color: var(--milk); }
+  &.btn--ghost { background: transparent; color: var(--milk); }
+  &.btn--ghost:hover { background: var(--milk); color: var(--plum); }
+}
+
+.surface-light .btn {
+  border-color: var(--plum);
+  background: var(--plum);
+  color: var(--milk);
+  &:hover { background: transparent; color: var(--plum); }
+}
+
+/* Headings using appSplitText stay hidden until GSAP has split them. */
+[appSplitText]:not(.split-ready) { visibility: hidden; }
+
+/* ---------- Route transitions (View Transitions API) ---------- */
+/* The nav keeps its own layer so only the page content wipes. */
+.site-nav { view-transition-name: site-nav; }
+
+::view-transition-group(site-nav) { animation: none; }
+
+::view-transition-group(root) { animation-duration: var(--transition-route); }
+
+::view-transition-old(root) {
+  animation: route-out var(--transition-route) var(--ease-wipe) both;
+}
+::view-transition-new(root) {
+  animation: route-in var(--transition-route) var(--ease-wipe) both;
+}
+
+@keyframes route-in {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes route-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0.35; transform: translateY(-3rem); }
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* ---------- Reduced motion: swap movement for simple fades ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-old(root) { animation: fade-out 200ms linear both; }
+  ::view-transition-new(root) { animation: fade-in 200ms linear both; }
+}
