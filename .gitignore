@@ -1,0 +1,24 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.log
+TestResults/
+appsettings.*.local.json
+secrets.json
+
+# Angular / Node
+node_modules/
+saizen-web/dist/
+saizen-web/.angular/
+saizen-web/out-tsc/
+saizen-web/coverage/
+npm-debug.log*
+
+# IDE / OS
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

@@ -1,0 +1,11 @@
+<main>
+  <h1>Saizen</h1>
+  @if (health(); as h) {
+    <p>API: {{ h.status }} · Database: {{ h.database ? 'connected' : 'down' }}</p>
+  } @else if (error(); as e) {
+    <p>API check failed: {{ e }}</p>
+  } @else {
+    <p>Checking API…</p>
+  }
+</main>
+<router-outlet />
